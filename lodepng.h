@@ -1,5 +1,5 @@
 /*
-LodePNG version 20200306
+LodePNG version 20200917
 
 Copyright (c) 2005-2020 Lode Vandevenne
 
@@ -991,6 +991,9 @@ unsigned decode(std::vector<unsigned char>& out, unsigned& w, unsigned& h,
 unsigned encode(std::vector<unsigned char>& out,
                 const unsigned char* in, unsigned w, unsigned h,
                 State& state);
+unsigned encode(std::vector<char>& out,
+                const unsigned char* in, unsigned w, unsigned h,
+                State& state);
 unsigned encode(std::vector<unsigned char>& out,
                 const std::vector<unsigned char>& in, unsigned w, unsigned h,
                 State& state);
@@ -1002,12 +1005,14 @@ Load a file from disk into an std::vector.
 return value: error code (0 means ok)
 */
 unsigned load_file(std::vector<unsigned char>& buffer, const std::string& filename);
+unsigned load_file(std::vector<char>& buffer, const std::string& filename);
 
 /*
 Save the binary data in an std::vector to a file on disk. The file is overwritten
 without warning.
 */
 unsigned save_file(const std::vector<unsigned char>& buffer, const std::string& filename);
+unsigned save_file(const std::vector<char>& buffer, const std::string& filename);
 #endif /* LODEPNG_COMPILE_DISK */
 #endif /* LODEPNG_COMPILE_PNG */
 
@@ -1775,6 +1780,7 @@ symbol.
 Not all changes are listed here, the commit history in github lists more:
 https://github.com/lvandeve/lodepng
 
+*) 17 sep 2020: added helper functions to use vector<char>.
 *) 06 mar 2020: simplified some of the dynamic memory allocations.
 *) 12 jan 2020: (!) added 'end' argument to lodepng_chunk_next to allow correct
    overflow checks.

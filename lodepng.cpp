@@ -6226,9 +6226,19 @@ unsigned load_file(std::vector<unsigned char>& buffer, const std::string& filena
   return size == 0 ? 0 : lodepng_buffer_file(&buffer[0], (size_t)size, filename.c_str());
 }
 
+unsigned load_file(std::vector<char>& buffer, const std::string& filename) {
+  long size = lodepng_filesize(filename.c_str());
+  if(size < 0) return 78;
+  buffer.resize((size_t)size);
+  return size == 0 ? 0 : lodepng_buffer_file((unsigned char*)&buffer[0], (size_t)size, filename.c_str());
+}
+
 /*write given buffer to the file, overwriting the file, it doesn't append to it.*/
 unsigned save_file(const std::vector<unsigned char>& buffer, const std::string& filename) {
   return lodepng_save_file(buffer.empty() ? 0 : &buffer[0], buffer.size(), filename.c_str());
+}
+unsigned save_file(const std::vector<char>& buffer, const std::string& filename) {
+  return lodepng_save_file(buffer.empty() ? 0 : (unsigned char*)&buffer[0], buffer.size(), filename.c_str());
 }
 #endif /* LODEPNG_COMPILE_DISK */
 
@@ -6375,6 +6385,19 @@ unsigned encode(std::vector<unsigned char>& out,
   unsigned error = lodepng_encode(&buffer, &buffersize, in, w, h, &state);
   if(buffer) {
     out.insert(out.end(), &buffer[0], &buffer[buffersize]);
+    lodepng_free(buffer);
+  }
+  return error;
+}
+
+unsigned encode(std::vector<char>& out,
+                const unsigned char* in, unsigned w, unsigned h,
+                State& state) {
+  unsigned char* buffer;
+  size_t buffersize;
+  unsigned error = lodepng_encode(&buffer, &buffersize, in, w, h, &state);
+  if(buffer) {
+    out.insert(out.end(), (char*)&buffer[0], (char*)&buffer[buffersize]);
     lodepng_free(buffer);
   }
   return error;
