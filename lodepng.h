@@ -2017,6 +2017,7 @@ symbol.
 Not all changes are listed here, the commit history in github lists more:
 https://github.com/lvandeve/lodepng
 
+*) 27 may 2025: added flags to ignore invalid names and private names errors
 *) 6 may 2025: renamed mDCv to mDCV and cLLi to cLLI as per the recent rename
    in the draft png third edition spec. Please note that while the third
    edition is not finalized, backwards-incompatible changes to its features are
